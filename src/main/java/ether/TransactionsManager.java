@@ -2,6 +2,7 @@ package ether;
 
 import static io.left.rightmesh.mesh.MeshManager.TRANSACTION_RECEIVED;
 
+import io.left.rightmesh.id.EncryptedMeshId;
 import io.left.rightmesh.id.MeshId;
 import io.left.rightmesh.mesh.JavaMeshManager;
 import io.left.rightmesh.mesh.MeshManager;
@@ -32,7 +33,7 @@ public final class TransactionsManager {
     private Thread queueThread = null;
     private volatile boolean isRunning = false;
     private Http httpAgent;
-    private MeshId ownMeshId;
+    private EncryptedMeshId ownMeshId;
 
 
     private static volatile TransactionsManager instance = null;
@@ -52,7 +53,8 @@ public final class TransactionsManager {
     private TransactionsManager(MeshManager mm) {
         httpAgent = new Http(Settings.RPC_ADDRESS, Settings.DEBUG_INFO);
         meshManager = (JavaMeshManager) mm;
-        ownMeshId = mm.getUuid();
+        ownMeshId = new EncryptedMeshId(mm.getUuid());
+        ownMeshId.readIdentity(System.getenv("RM_WALLET_PASSWORD"));
         mm.on(TRANSACTION_RECEIVED, this::handleTransactionPacket);
     }
 
@@ -807,7 +809,7 @@ public final class TransactionsManager {
      * @param receiver The channel's receiver.
      * @return Returns PaymentChannel objects if succeeded, otherwise returns null.
      */
-    private EtherUtility.PaymentChannel openChannel(MeshId sender, MeshId receiver) {
+    private EtherUtility.PaymentChannel openChannel(EncryptedMeshId sender, MeshId receiver) {
 
         String senderAddress = sender.toString();
         String recvAddress = receiver.toString();

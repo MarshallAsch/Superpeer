@@ -1,5 +1,6 @@
 package ether;
 
+import io.left.rightmesh.id.EncryptedMeshId;
 import io.left.rightmesh.id.MeshId;
 import io.left.rightmesh.util.EtherUtility;
 import io.left.rightmesh.util.MeshUtility;
@@ -497,7 +498,7 @@ public final class EtherClient {
      * @param httpAgent         The http agent to send the request to the Ether node.
      * @return                  True on success, otherwise returns False.
      */
-    public static boolean cooperativeCloseReceiver(MeshId sigMeshId, String senderAddress, BigInteger balance,
+    public static boolean cooperativeCloseReceiver(EncryptedMeshId sigMeshId, String senderAddress, BigInteger balance,
                                                    byte[] balanceSig, byte[] closingSig, Http httpAgent) {
 
         byte[] balance_Msg_Hash_Sig_r = Arrays.copyOfRange(balanceSig, 0, 32);
@@ -600,7 +601,7 @@ public final class EtherClient {
      * @param httpAgent         The http agent to send the request to the Ether node.
      * @return                  True on success, otherwise returns False.
      */
-    public static boolean cooperativeCloseSender(MeshId sigMeshId, String recvAddress, BigInteger balance,
+    public static boolean cooperativeCloseSender(EncryptedMeshId sigMeshId, String recvAddress, BigInteger balance,
                                                  byte[] balanceSig, byte[] closingSig, Http httpAgent) {
 
         byte[] balance_Msg_Hash_Sig_r = Arrays.copyOfRange(balanceSig, 0, 32);
